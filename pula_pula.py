@@ -40,8 +40,6 @@ def DesenhaQuadrado():
     glVertex(10 + x, y )
     glEnd()
 
-
-
 def Teclado(key, a, b):
     global y, x
     if (key==b"t" or key==b"T") and y + 1 < 90:
@@ -55,33 +53,34 @@ def Teclado(key, a, b):
     glutPostRedisplay()
 
 def Timer(val):
-  global x, y, width, height, xx, yy, v, vx, vy, cont, breakPoint, cont, theta, menorValor, x0, y0, g
-  print(breakPoint, cont)
-
-  if cont <= breakPoint:
+  global x, y, width, height, xx, yy, v, vx, vy, cont, breakPoint, cont, theta, menorValor, x0, y0, g, t
+  print(breakPoint, cont, t)
+  print(y)
+  
+  if cont <= 2*t:
     if cont > 1 and vy*cont - 0.5*cont**2 >= 10 :
       if x < xx:
         x = x0 + vx*cont
       elif x > xx:
         x = x0 - vx*cont
       
-    if vy*cont - 0.5*cont**2 >= 10:
+    if vy*cont - 0.5*cont**2 >= 0:
 
      y = vy*cont - 0.5*cont**2
      cont += 1
 
-    else:
-     y = 0
-     cont = breakPoint + 1
+
     glutPostRedisplay()
     glutTimerFunc(val,Timer,val)
   
   else:
     x0 = x
-
+    y = 0
+    glutPostRedisplay()
+    
 
 def Mouse(button, state, xMouse, yMouse):
-    global x, y, width, height, xx, yy, vx, vy , breakPoint, cont, theta, menorValor, v, g
+    global x, y, width, height, xx, yy, vx, vy , breakPoint, cont, theta, menorValor, v, g, t
     if button==GLUT_LEFT_BUTTON:
         if state==GLUT_DOWN:            
             xx = xMouse/(2)
@@ -90,14 +89,15 @@ def Mouse(button, state, xMouse, yMouse):
             deltaY = abs(yy-y)                  
 
             theta = np.arctan(deltaY / deltaX) if xx != x else np.pi / 2   
-
-            v = np.sqrt(2*(deltaX**2 + deltaY**2) / deltaY**2)
-            vx = v*np.cos(theta)
-            vy = 10*v*np.sin(theta)
+            distancia = np.sqrt((deltaX**2 + deltaY**2))
+            v = 0.05555*distancia + 8.88888
             
-            breakPoint = np.sqrt(deltaX**2 + deltaY**2) / v
+            vy = v*np.sin(theta)
 
+            breakPoint = np.sqrt(deltaX**2 + deltaY**2) / v
+            t = vy
             cont = 1            
+            vx = deltaX / (2*t)
 
             glutTimerFunc(50,Timer,50)
     
