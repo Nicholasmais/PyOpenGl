@@ -62,7 +62,7 @@ def Timer(val):
       elif x > xx:
         x = x0 - vx*cont
       
-    if vy*cont - 0.5*cont**2 >= 10:
+    if vy*cont - 0.5*cont**2 >= 2.5:
 
      y = vy*cont - 0.5*cont**2
     cont += 1
