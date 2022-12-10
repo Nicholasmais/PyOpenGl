@@ -83,7 +83,7 @@ def DesenhaLua(xx2, yy2, r, g, b, d, e):
     glBegin(GL_POLYGON)
     for i in range(100):
         cosine= radius * cos(i*2*pi/sides) + xx2  + d + 0.015
-        sine  = 1.5*radius * sin(i*2*pi/sides) + yy2  +e
+        sine  = 1.5*radius * sin(i*2*pi/sides) + yy2  + e
         glVertex2f(cosine,sine)
     glEnd()
 

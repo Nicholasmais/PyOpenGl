@@ -53,21 +53,19 @@ def Teclado(key, a, b):
     glutPostRedisplay()
 
 def Timer(val):
-  global x, y, width, height, xx, yy, v, vx, vy, cont, breakPoint, cont, theta, menorValor, x0, y0, g, t
-  print(breakPoint, cont, t)
-  print(y)
-  
+  global x, y, width, height, xx, yy, v, vx, vy, cont, breakPoint, cont, theta, menorValor, x0, y0, g, t, deltaX
+
   if cont <= 2*t:
-    if cont > 1 and vy*cont - 0.5*cont**2 >= 10 :
+    if cont > 1:
       if x < xx:
         x = x0 + vx*cont
       elif x > xx:
         x = x0 - vx*cont
       
-    if vy*cont - 0.5*cont**2 >= 0:
+    if vy*cont - 0.5*cont**2 >= 10:
 
      y = vy*cont - 0.5*cont**2
-     cont += 1
+    cont += 1
 
 
     glutPostRedisplay()
@@ -80,23 +78,24 @@ def Timer(val):
     
 
 def Mouse(button, state, xMouse, yMouse):
-    global x, y, width, height, xx, yy, vx, vy , breakPoint, cont, theta, menorValor, v, g, t
+    global x, y, width, height, xx, yy, vx, vy , breakPoint, cont, theta, menorValor, v, g, t, deltaX
     if button==GLUT_LEFT_BUTTON:
         if state==GLUT_DOWN:            
             xx = xMouse/(2)
             yy = -.5*yMouse +2*rsize
             deltaX = abs(xx-x)
             deltaY = abs(yy-y)                  
-
             theta = np.arctan(deltaY / deltaX) if xx != x else np.pi / 2   
             distancia = np.sqrt((deltaX**2 + deltaY**2))
             v = 0.05555*distancia + 8.88888
-            
+            print(deltaY)
             vy = v*np.sin(theta)
 
             breakPoint = np.sqrt(deltaX**2 + deltaY**2) / v
             t = vy
-            cont = 1            
+            if deltaY < 20:
+              t *= 10
+            cont = 1          
             vx = deltaX / (2*t)
 
             glutTimerFunc(50,Timer,50)
